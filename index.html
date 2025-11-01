@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healing Web của Bông 💪❤️‍🩹</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="stars-bg">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+    </div>
+    
+    <div class="pulsing-heart">❤️</div>
+
+    <div class="container">
+        <header>
+            <h1>Chúc bạn Bông chóng khoẻ nhée!</h1>
+            <p class="subtitle">Khỏi đê tôi chở bạn đi chơi</p>
+        </header>
+
+        <section class="counter-section">
+            <h2>Hành trình chữa lành đã được</h2>
+            <div class="days-count" id="days-count">0</div>
+            <p class="days-text">ngày</p>
+            <p class="healing-message">"Nhớ uống đủ thuốc nhí, gắng lên sắp khỏi roài!"</p>
+        </section>
+
+        <section class="jar-section">
+            <h2>Mẩu giấy nhỏ cho hôm nay</h2>
+            <div class="jar-container">
+                <img src="msjar.png" alt="Lọ lời chúc" id="message-jar" class="message-jar">
+                <p class="jar-instruction">Click vào lọ để nhận lời nhắnn!</p>
+                <p id="jar-status" class="jar-status"></p>
+            </div>
+            
+            <div id="message-popup" class="message-popup">
+                <div class="message-content">
+                    <span id="close-popup" class="close-popup">&times;</span>
+                    <p id="message-text"></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="music-section">
+            <h2>Nhạc chữa lành hôm nay</h2>
+            <div id="youtube-player" class="youtube-player">
+                </div>
+        </section>
+
+        <section class="bored-section">
+            <button id="bored-button" class="bored-button">"Nhỡ chán hay đau quá thì mình bấm nút này nhớ!"</button>
+            <p id="bored-status" class="bored-status"></p>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

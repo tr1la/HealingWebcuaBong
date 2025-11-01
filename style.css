@@ -1,0 +1,354 @@
+@font-face {
+  font-family: 'H1Font';
+  src: url('iCielPacifico.otf');
+}
+
+/* Thiết lập chung */
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, #fce0f3 0%, #ffc4e8 100%);
+    color: #4a4a4a;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden; /* Tránh cuộn ngang */
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    position: relative; /* Để các hiệu ứng không bị che */
+    z-index: 10;
+}
+
+header {
+    text-align: center;
+    border-bottom: 2px dashed #ffe0f0;
+    padding-bottom: 20px;
+}
+
+h1 {
+    font-family: 'H1Font';
+    font-size: 2.5rem;
+    color: #d6336c;
+    margin: 0;
+}
+
+h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    color: #c2185b;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #7c7c7c;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+/* Bộ đếm ngày */
+.counter-section {
+    text-align: center;
+}
+.days-count {
+    font-size: 6rem;
+    font-weight: 700;
+    color: #e91e63;
+    line-height: 1;
+}
+.days-text {
+    font-size: 1.5rem;
+    color: #e91e63;
+    margin-top: -10px;
+}
+.healing-message {
+    font-style: italic;
+    color: #555;
+    background: #fff8c4;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Lọ Lời Chúc */
+.jar-container {
+    text-align: center;
+    position: relative;
+}
+.message-jar {
+    width: 150px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.message-jar:hover {
+    transform: scale(1.1);
+}
+.jar-instruction {
+    font-size: 0.9rem;
+    color: #888;
+}
+.jar-status {
+    color: #d32f2f;
+    font-weight: 500;
+}
+
+/* --- CẬP NHẬT HIỆU ỨNG LỌ --- */
+
+/* Hiệu ứng khi click vào lọ */
+.message-jar.clicked {
+    animation: shakeJar 0.4s ease-in-out;
+}
+
+@keyframes shakeJar {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Popup tin nhắn (ĐÃ SỬA LỖI) */
+.message-popup {
+    display: flex; /* LUÔN LUÔN LÀ FLEX, không bao giờ là 'none' */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+
+    /* Dùng opacity và pointer-events để ẩn/hiện */
+    pointer-events: none; 
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out; /* Đây là hiệu ứng mờ cho nền */
+}
+
+.message-popup.visible {
+    /* Khi có class 'visible', chỉ cần đổi 2 thuộc tính này */
+    pointer-events: auto; 
+    opacity: 1;
+}
+
+/* Nội dung mẩu giấy (Đã cập nhật) */
+.message-content {
+    background: #fffbe9; /* Màu giấy cũ */
+    padding: 20px 30px;
+    border-radius: 5px;
+    max-width: 350px;
+    width: 80%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+    color: #5d4037;
+
+    /* Hiệu ứng ban đầu: Co nhỏ, xoay, ẩn */
+    transform: scale(0.5) rotateY(90deg);
+    opacity: 0;
+    transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease-out;
+}
+
+/* Khi giấy hiện lên (Mới) */
+.message-popup.visible .message-content {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+}
+
+/* Kiểu chữ gõ (Mới) */
+#message-text {
+    font-family: 'H1Font', cursive; /* Kế thừa font chữ đẹp */
+    font-size: 1.5rem; /* Cỡ chữ khi đã mở */
+    line-height: 2;
+    overflow: hidden; /* Dùng để tạo hiệu ứng chữ gõ */
+    white-space: pre-wrap; /* Giữ định dạng xuống dòng nếu có */
+    text-align: left; /* Chữ hiện ra từ trái sang */
+    margin: 20px 0;
+    min-height: 60px; /* Để giữ không gian khi chữ đang hiện ra */
+    opacity: 0; /* Ẩn chữ ban đầu */
+    transition: opacity 0.5s ease-in;
+    color: #5d4037; /* Đảm bảo chữ có màu */
+}
+
+
+/* Nút đóng (Đã cập nhật) */
+.close-popup {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 2rem;
+    color: #aaa;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+}
+.close-popup:hover {
+    color: #333;
+}
+
+/* Hộp nhạc */
+.youtube-player {
+    position: relative;
+    padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.youtube-player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Nút Chán */
+.bored-section {
+    text-align: center;
+}
+.bored-button {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+}
+.bored-button:hover {
+    background-color: #f50057;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.5);
+}
+.bored-status {
+    font-size: 0.9rem;
+    color: #00695c;
+}
+
+/* Hiệu ứng Trái Tim */
+.pulsing-heart {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2.5rem;
+    animation: pulse 1.5s infinite;
+    z-index: 100;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Hiệu ứng Ngôi Sao */
+@keyframes move-twink-back {
+    from { background-position: 0 0; }
+    to { background-position: -10000px 5000px; }
+}
+.stars-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+}
+#stars, #stars2, #stars3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: transparent url(star1.png) repeat top center;
+    animation: move-twink-back 200s linear infinite;
+}
+#stars2 {
+    background-image: url(star2.png);
+    animation-duration: 150s;
+}
+#stars3 {
+    background-image: url(star1.png);
+    animation-duration: 100s;
+}
+/* ============================================== */
+/* --- CẬP NHẬT: RESPONSIVE CHO ĐIỆN THOẠI --- */
+/* ============================================== */
+
+/* Chúng ta sẽ dùng mốc 480px để bao gồm hầu hết các điện thoại */
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px; /* Giảm padding của body */
+    }
+
+    .container {
+        margin: 20px auto; /* Giảm khoảng cách trên dưới */
+        padding: 15px 20px; /* Giảm padding trong container */
+    }
+
+    h1 {
+        font-size: 2.2rem; /* Giảm cỡ chữ tiêu đề chính */
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .days-count {
+        font-size: 5rem; /* Giảm cỡ chữ số ngày */
+    }
+
+    .days-text {
+        font-size: 1.2rem;
+    }
+
+    .message-jar {
+        width: 130px; /* Giảm cỡ lọ một chút */
+    }
+
+    /* Giảm cỡ chữ của mẩu giấy */
+    .message-content {
+        padding: 20px;
+        max-width: 300px; /* Thu nhỏ mẩu giấy */
+    }
+
+    #message-text {
+        font-size: 1.6rem; /* Giảm cỡ chữ gõ */
+        min-height: 50px;
+    }
+
+    .bored-button {
+        padding: 15px 20px;
+        font-size: 0.9rem; /* Giảm cỡ chữ nút */
+    }
+
+    .pulsing-heart {
+        font-size: 2rem; /* Thu nhỏ trái tim */
+        top: 10px;
+        right: 10px;
+    }
+
+    .youtube-player {
+        border-radius: 8px; /* Giảm bo góc cho vừa vặn hơn */
+    }
+}
